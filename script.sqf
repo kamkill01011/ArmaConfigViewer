@@ -1,16 +1,20 @@
 startLoadingScreen ["Script running ..."];
 
-KAM_Log_Class = {
-	diag_log ["KAM_ACV_Class", _this];
-};
+
+_inidbi = ["new", "allCfg"] call OO_INIDBI;
+
 KAM_Log_Property = {
-	diag_log ["KAM_ACV_Property", _this];
+	["write", ["all", _this # 0, _this # 1]] call _inidbi;
 };
 KAM_process_Class = {
-	([_this, inheritsFrom _this]) call KAM_Log_Class;
+	private _parent = "";
+	private _parents = (configHierarchy (inheritsFrom _this));
+	if (count _parents > 0) then {
+		_parent = str (_parents # -1);
+	};
+	([_this, _parent]) call KAM_Log_Property;
 	
 	{
-		_value = "ERROR";
 		if(isNumber _x) then {([_x, (getNumber _x)]) call KAM_Log_Property};
 		if(isText _x) then {([_x, (getText _x)]) call KAM_Log_Property};
 		if(isArray _x) then {([_x, (getArray _x)]) call KAM_Log_Property};
@@ -22,5 +26,6 @@ KAM_process_Class = {
 (configFile >> "CfgWeapons") call KAM_process_Class;
 (configFile >> "CfgMagazines") call KAM_process_Class;
 (configFile >> "CfgAmmo") call KAM_process_Class;
+
 
 endLoadingScreen;
