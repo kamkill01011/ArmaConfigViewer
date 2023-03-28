@@ -14,12 +14,19 @@ public class Parser {
         }
     }
 
-    private static void parseLine(String line) {
+    public static void parseLine(String line) {
         if (line.startsWith("[")) {
             return;
         }
         int index = line.indexOf('=');
         String path = line.substring(0, index);
-        String data = line.substring(index);
+        String data = line.substring(index + 1).replaceAll("(^\")|(\"$)", "");
+        System.out.println(path);
+        System.out.println(data);
+        if (data.startsWith("\"bin\\config.bin/")) {
+            CfgClass item = new CfgClass(path);
+        } else {
+            CfgProperty item = new CfgProperty(path);
+        }
     }
 }

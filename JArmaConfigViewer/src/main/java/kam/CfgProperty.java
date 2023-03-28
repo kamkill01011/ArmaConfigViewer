@@ -1,6 +1,10 @@
 package kam;
 
-public class CfgProperty <T> {
-    private T value;
+public class CfgProperty extends CfgItem {
+    private String value;
+
+    public CfgProperty(String path) {
+        super(path);
+    }
 
 }
